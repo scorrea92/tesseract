@@ -376,6 +376,7 @@ void RecodeBeamSearch::ExtractPathAsUnicharIds(
   certs->truncate(0);
   ratings->truncate(0);
   xcoords->truncate(0);
+  const UNICHARSET* unicharset;
   // Backtrack extracting only valid, non-duplicate unichar-ids.
   int t = 0;
   int width = best_nodes.size();
@@ -383,6 +384,7 @@ void RecodeBeamSearch::ExtractPathAsUnicharIds(
     double certainty = 0.0;
     double rating = 0.0;
     while (t < width && best_nodes[t]->unichar_id == INVALID_UNICHAR_ID) {
+      std::cout << "Chart ID: "<< unicharset->id_to_unichar_ext( best_nodes[t]->unichar_id ) << " Certainty: " << best_nodes[t]->certainty << std::endl;
       double cert = best_nodes[t++]->certainty;
       if (cert < certainty) certainty = cert;
       rating -= cert;
