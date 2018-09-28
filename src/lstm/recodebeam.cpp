@@ -167,7 +167,7 @@ void RecodeBeamSearch::ExtractBestPathAsUnicharIds(
     GenericVector<int>* xcoords) const {
   GenericVector<const RecodeNode*> best_nodes;
 
-  for (int i = 0; i < unicharset.size(); i++){
+  for (int i = 0; i < unicharset->size(); i++){
     std::cout << "CHarlist" << unicharset[i]->UNICHARSET->unichar_ids << std::endl;
   }
   
