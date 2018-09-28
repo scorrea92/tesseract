@@ -378,7 +378,7 @@ void RecodeBeamSearch::ExtractPathAsUnicharIds(
   while (t < width) {
     double certainty = 0.0;
     double rating = 0.0;
-    std::cout << "Chart ID: "<<best_nodes[t]->unichar_id << " Certainty: " << best_nodes[t]->certainty << endl;
+    std::cout << "Chart ID: "<< best_nodes[t]->unichar_id << " Certainty: " << best_nodes[t]->certainty << std::endl;
     while (t < width && best_nodes[t]->unichar_id == INVALID_UNICHAR_ID) {
       double cert = best_nodes[t++]->certainty;
       if (cert < certainty) certainty = cert;
