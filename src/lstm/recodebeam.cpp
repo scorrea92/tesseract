@@ -26,6 +26,7 @@
 #include <map>
 #include <set>
 #include <vector>
+#include <iostream>
 
 #include <algorithm>
 
@@ -377,6 +378,7 @@ void RecodeBeamSearch::ExtractPathAsUnicharIds(
   while (t < width) {
     double certainty = 0.0;
     double rating = 0.0;
+    std::cout << best_nodes[t]->unichar_id << endl;
     while (t < width && best_nodes[t]->unichar_id == INVALID_UNICHAR_ID) {
       double cert = best_nodes[t++]->certainty;
       if (cert < certainty) certainty = cert;
