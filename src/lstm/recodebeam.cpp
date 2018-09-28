@@ -166,6 +166,10 @@ void RecodeBeamSearch::ExtractBestPathAsUnicharIds(
     GenericVector<float>* certs, GenericVector<float>* ratings,
     GenericVector<int>* xcoords) const {
   GenericVector<const RecodeNode*> best_nodes;
+  for (int i = 0; i < unichar_ids.size(); i++){
+    std::cout << "CHarlist" << unicharset->id_to_unichar(unichar_ids[i]);
+  }
+  
   ExtractBestPaths(&best_nodes, nullptr);
   ExtractPathAsUnicharIds(best_nodes, unichar_ids, certs, ratings, xcoords);
   if (debug) {
@@ -239,11 +243,11 @@ void RecodeBeamSearch::ExtractBestPathAsWords(const TBOX& line_box,
     if (word_end < num_ids && unichar_ids[word_end] == UNICHAR_SPACE)
       space_cert = certs[word_end];
     bool leading_space =
-        word_start > 0 && unichar_ids[word_start - 1] == UNICHAR_SPACE;
+        word_start > 0 && unichar_ids[word_start - 1] == UNICHAR_SPACE;UNICHARSET
     // Create a WERD_RES for the output word.
     WERD_RES* word_res = InitializeWord(
         leading_space, line_box, word_start, word_end,
-        std::min(space_cert, prev_space_cert), unicharset, xcoords, scale_factor);
+        std::min(space_cert, prev_space_cert), unicharset, xcoords, scaUNICHARSET
     if (glyph_confidence == 1) {
       for (size_t i = timestepEnd; i < xcoords[word_end]; i++) {
         word_res->timesteps.push_back(timesteps[i]);
@@ -378,7 +382,6 @@ void RecodeBeamSearch::ExtractPathAsUnicharIds(
   while (t < width) {
     double certainty = 0.0;
     double rating = 0.0;
-    std::cout << "Chart ID: "<<best_nodes[t]->unichar_id << " Certainty: " << best_nodes[t]->certainty << endl;
     while (t < width && best_nodes[t]->unichar_id == INVALID_UNICHAR_ID) {
       double cert = best_nodes[t++]->certainty;
       if (cert < certainty) certainty = cert;
