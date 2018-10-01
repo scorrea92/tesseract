@@ -26,7 +26,6 @@
 #include <map>
 #include <set>
 #include <vector>
-#include <iostream>
 
 #include <algorithm>
 
@@ -83,14 +82,6 @@ RecodeBeamSearch::RecodeBeamSearch(const UnicharCompress& recoder,
 void RecodeBeamSearch::Decode(const NetworkIO& output, double dict_ratio,
                               double cert_offset, double worst_dict_cert,
                               const UNICHARSET* charset, int glyph_confidence) {
-  
-  std::cout << "RecodeBeamSearch::Decode network" << std::endl; 
-
-  for (int t = 0; t < charset->size(); t++) {
-    std::cout << "charset->get_enabled(" << t <<"): ";
-    std::cout << charset->get_enabled(t) << std::endl; 
-  }  
-  
   beam_size_ = 0;
   int width = output.Width();
   if (glyph_confidence)
@@ -114,8 +105,6 @@ void RecodeBeamSearch::Decode(const GENERIC_2D_ARRAY<float>& output,
     ComputeTopN(output[t], output.dim2(), kBeamWidths[0]);
     DecodeStep(output[t], t, dict_ratio, cert_offset, worst_dict_cert, charset);
   }
-
-  std::cout << "RecodeBeamSearch::Decode" << std::endl;
 }
 
 void RecodeBeamSearch::SaveMostCertainGlyphs(const float* outputs,
@@ -176,7 +165,6 @@ void RecodeBeamSearch::ExtractBestPathAsUnicharIds(
     GenericVector<float>* certs, GenericVector<float>* ratings,
     GenericVector<int>* xcoords) const {
   GenericVector<const RecodeNode*> best_nodes;
-
   ExtractBestPaths(&best_nodes, nullptr);
   ExtractPathAsUnicharIds(best_nodes, unichar_ids, certs, ratings, xcoords);
   if (debug) {
@@ -250,11 +238,11 @@ void RecodeBeamSearch::ExtractBestPathAsWords(const TBOX& line_box,
     if (word_end < num_ids && unichar_ids[word_end] == UNICHAR_SPACE)
       space_cert = certs[word_end];
     bool leading_space =
-        word_start > 0 && unichar_ids[word_start - 1] == UNICHAR_SPACE;UNICHARSET
+        word_start > 0 && unichar_ids[word_start - 1] == UNICHAR_SPACE;
     // Create a WERD_RES for the output word.
     WERD_RES* word_res = InitializeWord(
         leading_space, line_box, word_start, word_end,
-        std::min(space_cert, prev_space_cert), unicharset, xcoords, scaUNICHARSET
+        std::min(space_cert, prev_space_cert), unicharset, xcoords, scale_factor);
     if (glyph_confidence == 1) {
       for (size_t i = timestepEnd; i < xcoords[word_end]; i++) {
         word_res->timesteps.push_back(timesteps[i]);
@@ -383,9 +371,6 @@ void RecodeBeamSearch::ExtractPathAsUnicharIds(
   certs->truncate(0);
   ratings->truncate(0);
   xcoords->truncate(0);
-
-  std::cout << "RecodeBeamSearch::ExtractPathAsUnicharIds" << std::endl;
-
   // Backtrack extracting only valid, non-duplicate unichar-ids.
   int t = 0;
   int width = best_nodes.size();
@@ -1021,4 +1006,4 @@ void RecodeBeamSearch::DebugUnicharPath(
   tprintf("Path total rating = %g\n", total_rating);
 }
 
-}  // namespace tesseract.
+} // namespace tesseract.
