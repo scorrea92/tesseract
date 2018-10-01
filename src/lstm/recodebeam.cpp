@@ -28,6 +28,7 @@
 #include <vector>
 
 #include <algorithm>
+#include <iostream>
 
 namespace tesseract {
 
@@ -165,9 +166,15 @@ void RecodeBeamSearch::ExtractBestPathAsUnicharIds(
     GenericVector<float>* certs, GenericVector<float>* ratings,
     GenericVector<int>* xcoords) const {
   GenericVector<const RecodeNode*> best_nodes;
+
+   for (int t = 0; t < unicharset->size(); t++) {
+    std::cout << "unicharset->get_enabled(" << t <<"): ";
+    std::cout << unicharset->get_enabled(t) << std::endl; 
+  }   
+
   ExtractBestPaths(&best_nodes, nullptr);
   ExtractPathAsUnicharIds(best_nodes, unichar_ids, certs, ratings, xcoords);
-  if (debug) {
+  if (true) {
     DebugPath(unicharset, best_nodes);
     DebugUnicharPath(unicharset, best_nodes, *unichar_ids, *certs, *ratings,
                      *xcoords);
