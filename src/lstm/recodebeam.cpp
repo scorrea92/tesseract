@@ -83,6 +83,15 @@ RecodeBeamSearch::RecodeBeamSearch(const UnicharCompress& recoder,
 void RecodeBeamSearch::Decode(const NetworkIO& output, double dict_ratio,
                               double cert_offset, double worst_dict_cert,
                               const UNICHARSET* charset, int glyph_confidence) {
+  
+  std::cout << "RecodeBeamSearch::Decode network" << std::endl;
+
+
+  for (int t = 0; t < charset->size(); t++) {
+    std::cout << "unicharset->get_enabled(" << t <<"): ";
+    std::cout << charset->get_enabled(t) << std::endl; 
+  } 
+  
   beam_size_ = 0;
   int width = output.Width();
   if (glyph_confidence)
@@ -100,6 +109,14 @@ void RecodeBeamSearch::Decode(const GENERIC_2D_ARRAY<float>& output,
                               double dict_ratio, double cert_offset,
                               double worst_dict_cert,
                               const UNICHARSET* charset) {
+
+  std::cout << "RecodeBeamSearch::Decode" << std::endl;
+
+  for (int t = 0; t < charset->size(); t++) {
+    std::cout << "unicharset->get_enabled(" << t <<"): ";
+    std::cout << charset->get_enabled(t) << std::endl; 
+  }  
+
   beam_size_ = 0;
   int width = output.dim1();
   for (int t = 0; t < width; ++t) {
@@ -165,12 +182,7 @@ void RecodeBeamSearch::ExtractBestPathAsUnicharIds(
     bool debug, const UNICHARSET* unicharset, GenericVector<int>* unichar_ids,
     GenericVector<float>* certs, GenericVector<float>* ratings,
     GenericVector<int>* xcoords) const {
-  GenericVector<const RecodeNode*> best_nodes;
-
-   for (int t = 0; t < unicharset->size(); t++) {
-    std::cout << "unicharset->get_enabled(" << t <<"): ";
-    std::cout << unicharset->get_enabled(t) << std::endl; 
-  }   
+  GenericVector<const RecodeNode*> best_nodes; 
 
   ExtractBestPaths(&best_nodes, nullptr);
   ExtractPathAsUnicharIds(best_nodes, unichar_ids, certs, ratings, xcoords);
@@ -374,6 +386,9 @@ void RecodeBeamSearch::ExtractPathAsUnicharIds(
     GenericVector<int>* unichar_ids, GenericVector<float>* certs,
     GenericVector<float>* ratings, GenericVector<int>* xcoords,
     std::deque<std::pair<int,int>>* best_glyphs) {
+
+  std::cout << "RecodeBeamSearch::ExtractPathAsUnicharIds" << std::endl;
+
   unichar_ids->truncate(0);
   certs->truncate(0);
   ratings->truncate(0);
