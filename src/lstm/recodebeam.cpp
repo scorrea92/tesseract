@@ -83,6 +83,9 @@ RecodeBeamSearch::RecodeBeamSearch(const UnicharCompress& recoder,
 void RecodeBeamSearch::Decode(const NetworkIO& output, double dict_ratio,
                               double cert_offset, double worst_dict_cert,
                               const UNICHARSET* charset, int glyph_confidence) {
+  
+  std::cout << "RecodeBeamSearch::Decode network" << std::endl; 
+  
   beam_size_ = 0;
   int width = output.Width();
   if (glyph_confidence)
@@ -106,6 +109,8 @@ void RecodeBeamSearch::Decode(const GENERIC_2D_ARRAY<float>& output,
     ComputeTopN(output[t], output.dim2(), kBeamWidths[0]);
     DecodeStep(output[t], t, dict_ratio, cert_offset, worst_dict_cert, charset);
   }
+
+  std::cout << "RecodeBeamSearch::Decode" << std::endl;
 }
 
 void RecodeBeamSearch::SaveMostCertainGlyphs(const float* outputs,
@@ -167,10 +172,6 @@ void RecodeBeamSearch::ExtractBestPathAsUnicharIds(
     GenericVector<int>* xcoords) const {
   GenericVector<const RecodeNode*> best_nodes;
 
-  for (int i = 0; i < unicharset->size(); i++){
-    std::cout << "CHarlist" << unicharset[i]<< std::endl;
-  }
-  
   ExtractBestPaths(&best_nodes, nullptr);
   ExtractPathAsUnicharIds(best_nodes, unichar_ids, certs, ratings, xcoords);
   if (debug) {
@@ -377,6 +378,9 @@ void RecodeBeamSearch::ExtractPathAsUnicharIds(
   certs->truncate(0);
   ratings->truncate(0);
   xcoords->truncate(0);
+
+  std::cout << "RecodeBeamSearch::ExtractPathAsUnicharIds" << std::endl;
+
   // Backtrack extracting only valid, non-duplicate unichar-ids.
   int t = 0;
   int width = best_nodes.size();
