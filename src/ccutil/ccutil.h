@@ -86,19 +86,6 @@ class CCUtil {
              "Use definite ambiguities when running character classifier");
   BOOL_VAR_H(use_ambigs_for_adaption, 0,
              "Use ambigs for deciding whether to adapt to a character");
-
-  STRING_VAR_H(tessedit_char_blacklist, "",
-               "Blacklist of chars not to recognize");
-  STRING_VAR_H(tessedit_char_whitelist, "",
-               "Whitelist of chars to recognize");
-  STRING_VAR_H(tessedit_char_unblacklist, "",
-               "List of chars to override tessedit_char_blacklist");
-
-  // Set the white and blacklists (if any)
-  unicharset->set_black_and_whitelist(tessedit_char_blacklist.string(),
-                                     tessedit_char_whitelist.string(),
-                                     tessedit_char_unblacklist.string());
-
 };
 
 extern CCUtilMutex tprintfMutex;  // should remain global
