@@ -188,19 +188,19 @@ void RecodeBeamSearch::ExtractBestPathAsWords(const TBOX& line_box,
                                               PointerVector<WERD_RES>* words,
                                               int glyph_confidence) {
 
-  UNICHARSET* charset = new UNICHARSET(*unicharset);
-  charset->set_black_and_whitelist("", "abcd", "");
+  // UNICHARSET* charset = new UNICHARSET(*unicharset);
+  // charset->set_black_and_whitelist("", "abcd", "");
 
-  std::cout << "RecodeBeamSearch::ExtractBestPathAsWords" << std::endl;
+  // std::cout << "RecodeBeamSearch::ExtractBestPathAsWords" << std::endl;
 
-  int count = 0;
-  for (int t = 0; t < unicharset->size(); t++) {
-    if (unicharset->get_enabled(t)){
-      count ++;
-    }
-  } 
+  // int count = 0;
+  // for (int t = 0; t < unicharset->size(); t++) {
+  //   if (unicharset->get_enabled(t)){
+  //     count ++;
+  //   }
+  // } 
 
-  std::cout << "White char List: " << count << std::endl;
+  // std::cout << "White char List: " << count << std::endl;
 
   words->truncate(0);
   GenericVector<int> unichar_ids;
@@ -394,18 +394,7 @@ void RecodeBeamSearch::ExtractPathAsUnicharIds(
   certs->truncate(0);
   ratings->truncate(0);
   xcoords->truncate(0);
-    
-  std::cout << "RecodeBeamSearch::ExtractPathAsUnicharIds" << std::endl;
-  int count = 0;
-  for (int t = 0; t < unicharset->size(); t++) {
-    if (unicharset->get_enabled(t)){
-      count ++;
-    }
-  } 
-
-  std::cout << "White char List: " << count << std::endl;
-
-   
+     
   // Backtrack extracting only valid, non-duplicate unichar-ids.
   int t = 0;
   int width = best_nodes.size();
