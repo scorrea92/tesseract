@@ -66,6 +66,7 @@ class CCUtil {
   STRING lang;
   STRING language_data_path_prefix;
   UNICHARSET unicharset;
+  unicharset->set_black_and_whitelist("", "abcd", "");
   UnicharAmbigs unichar_ambigs;
   STRING imagefile;  // image file name
   STRING directory;  // main directory
@@ -73,8 +74,8 @@ class CCUtil {
  private:
   ParamsVectors params_;
 
-  UNICHARSET* charset_1234_s4c0 = new UNICHARSET(unicharset);
-  charset_1234_s4c0->set_black_and_whitelist("", "abcd", "");
+  // UNICHARSET* charset_1234_s4c0 = new UNICHARSET(unicharset);
+  // charset_1234_s4c0->set_black_and_whitelist("", "abcd", "");
 
  public:
   // Member parameters.
