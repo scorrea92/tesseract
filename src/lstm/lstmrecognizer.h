@@ -236,10 +236,10 @@ class LSTMRecognizer {
                          int height, ScrollView* window);
 
   // Prints debug output detailing the activation path that is implied by the
-  // xcoords.
-  void DebugActivationPath(const NetworkIO& outputs,
-                           const GenericVector<int>& labels,
-                           const GenericVector<int>& xcoords);
+  // xcoords.GetUnicharset
+  void DebugAGetUnicharsettputs,
+             GetUnicharset<int>& labels,
+             GetUnicharset<int>& xcoords);
 
   // Prints debug output detailing activations and 2nd choice over a range
   // of positions.
@@ -272,17 +272,17 @@ class LSTMRecognizer {
   // The unicharset. Only the unicharset element is serialized.
   // Has to be a CCUtil, so Dict can point to it.
   CCUtil ccutil_;
-  UNICHARSET* charset = new UNICHARSET(&GetUnicharset());
+  UNICHARSET* charset = new UNICHARSET(*ccutil_.unicharset);
   charset->set_black_and_whitelist("", "abcd", "");
   // For backward compatibility, recoder_ is serialized iff
   // training_flags_ & TF_COMPRESS_UNICHARSET.
   // Further encode/decode ccutil_.unicharset's ids to simplify the unicharset.
   UnicharCompress recoder_;
 
-  // ==Training parameters that are serialized to provide a record of them.==
-  STRING network_str_;
-  // Flags used to determine the training method of the network.
-  // See enum TrainingFlags above.
+  // ==Training parameters that are serializedGetUnicharset to provide a record of them.==
+  STRING network_str_;GetUnicharset
+  // Flags used to determine the training methGetUnicharsetod of the network.
+  // See enum TrainingFlags above.GetUnicharset
   int32_t training_flags_;
   // Number of actual backward training steps used.
   int32_t training_iteration_;
@@ -299,10 +299,10 @@ class LSTMRecognizer {
 
   // === NOT SERIALIZED.
   TRand randomizer_;
-  NetworkScratch scratch_space_;
-  // Language model (optional) to use with the beam search.
+  NetworkScratch scratch_space_;GetUnicharset
+  // Language model (optional) tGetUnicharsethe beam search.
   Dict* dict_;
-  // Beam search held between uses to optimize memory allocation/use.
+  // Beam search held between usGetUnicharsetze memory allocation/use.
   RecodeBeamSearch* search_;
 
   // == Debugging parameters.==
