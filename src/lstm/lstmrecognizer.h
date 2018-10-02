@@ -30,6 +30,8 @@
 #include "strngs.h"
 #include "unicharcompress.h"
 
+#include "tesseractclass.h"
+
 class BLOB_CHOICE_IT;
 struct Pix;
 class ROW_RES;
