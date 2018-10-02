@@ -195,7 +195,7 @@ void RecodeBeamSearch::ExtractBestPathAsWords(const TBOX& line_box,
 
   int count = 0;
   for (int t = 0; t < charset->size(); t++) {
-    if (charset->get_enabled(t)){
+    if (unicharset->get_enabled(t)){
       count ++;
     }
   } 
@@ -214,7 +214,7 @@ void RecodeBeamSearch::ExtractBestPathAsWords(const TBOX& line_box,
   if (debug) {
     DebugPath(unicharset, best_nodes);
     ExtractPathAsUnicharIds(second_nodes, &unichar_ids, &certs, &ratings,
-                            &xcoords, charset);
+                            &xcoords, unicharset);
     tprintf("\nSecond choice path:\n");
     DebugUnicharPath(unicharset, second_nodes, unichar_ids, certs, ratings,
                      xcoords);
@@ -225,7 +225,7 @@ void RecodeBeamSearch::ExtractBestPathAsWords(const TBOX& line_box,
   //Coordinates of every chosen character to match the alternative glyphs to it
   if (glyph_confidence == 2) {
     ExtractPathAsUnicharIds(best_nodes, &unichar_ids, &certs, &ratings,
-                            &xcoords, charset, &best_glyphs);
+                            &xcoords, unicharset, &best_glyphs);
     if (best_glyphs.size() > 0) {
       current_char = best_glyphs.front().first;
       timestepEnd = best_glyphs.front().second;
@@ -233,7 +233,7 @@ void RecodeBeamSearch::ExtractBestPathAsWords(const TBOX& line_box,
     }
   } else {
     ExtractPathAsUnicharIds(best_nodes, &unichar_ids, &certs, &ratings,
-                            &xcoords, charset);
+                            &xcoords, unicharset);
   }
   int num_ids = unichar_ids.size();
   if (debug) {
