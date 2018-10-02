@@ -193,13 +193,27 @@ void RecodeBeamSearch::ExtractBestPathAsWords(const TBOX& line_box,
   std::deque<std::pair<int,int>> best_glyphs;
   ExtractBestPaths(&best_nodes, &second_nodes);
 
-  std::cout << "RecodeBeamSearch::ExtractBestPathAsWords" << std::endl;
-  std::cout << "unicharset->size()    " << unicharset->size() << std::endl;
+  UNICHARSET* charset = new UNICHARSET(*unicharset);
 
-  for (int t = 0; t < unicharset->size(); t++) {
-    std::cout << "unicharset->get_enabled(" << t <<"): ";
-    std::cout << unicharset->get_enabled(t) << std::endl; 
+  std::cout << "RecodeBeamSearch::ExtractBestPathAsWords" << std::endl;
+  std::cout << "charset->size()    " << charset->size() << std::endl;
+
+  for (int t = 0; t < charset->size(); t++) {
+    std::cout << "charset->get_enabled(" << t <<"): ";
+    std::cout << charset->get_enabled(t) << std::endl; 
   }  
+
+  
+  charset->set_black_and_whitelist("", "ABCDEFG", "");
+
+  std::cout << " ****************************************** RecodeBeamSearch::ExtractBestPathAsWords BLACK LIST ****************************************** " << std::endl;
+  std::cout << "charset->size()  BLACK LIST  " << charset->size() << std::endl;
+
+  for (int t = 0; t < charset->size(); t++) {
+    std::cout << "charset->get_enabled(" << t <<"): ";
+    std::cout << charset->get_enabled(t) << std::endl; 
+  }  
+
 
   if (debug) {
     DebugPath(unicharset, best_nodes);
