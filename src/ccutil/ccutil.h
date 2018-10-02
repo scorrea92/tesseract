@@ -73,7 +73,7 @@ class CCUtil {
  private:
   ParamsVectors params_;
 
-  UNICHARSET* charset_1234_s4c0 = new UNICHARSET(*unicharset);
+  UNICHARSET* charset_1234_s4c0 = new UNICHARSET(unicharset);
   charset_1234_s4c0->set_black_and_whitelist("", "abcd", "");
 
  public:
