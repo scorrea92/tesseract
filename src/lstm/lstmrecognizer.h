@@ -272,8 +272,6 @@ class LSTMRecognizer {
   // The unicharset. Only the unicharset element is serialized.
   // Has to be a CCUtil, so Dict can point to it.
   CCUtil ccutil_;
-  UNICHARSET* charset = new UNICHARSET(*ccutil_.unicharset);
-  charset->set_black_and_whitelist("", "abcd", "");
   // For backward compatibility, recoder_ is serialized iff
   // training_flags_ & TF_COMPRESS_UNICHARSET.
   // Further encode/decode ccutil_.unicharset's ids to simplify the unicharset.

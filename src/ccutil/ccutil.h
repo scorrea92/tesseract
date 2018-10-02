@@ -73,6 +73,9 @@ class CCUtil {
  private:
   ParamsVectors params_;
 
+  UNICHARSET* charset_1234_s4c0 = new UNICHARSET(*ccutil_.unicharset);
+  charset_1234_s4c0->set_black_and_whitelist("", "abcd", "");
+
  public:
   // Member parameters.
   // These have to be declared and initialized after params_ member, since
