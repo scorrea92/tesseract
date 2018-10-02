@@ -187,6 +187,21 @@ void RecodeBeamSearch::ExtractBestPathAsWords(const TBOX& line_box,
                                               const UNICHARSET* unicharset,
                                               PointerVector<WERD_RES>* words,
                                               int glyph_confidence) {
+
+  UNICHARSET* charset = new UNICHARSET(*unicharset);
+  charset->set_black_and_whitelist("", "ABC", "");
+
+  std::cout << "RecodeBeamSearch::ExtractBestPathAsWords" << std::endl;
+
+  int count = 0;
+  for (int t = 0; t < charset->size(); t++) {
+    if (unicharset->get_enabled(t)){
+      count ++;
+    }
+  } 
+
+  std::cout << "White char List: " << count << std::endl;
+
   words->truncate(0);
   GenericVector<int> unichar_ids;
   GenericVector<float> certs;
@@ -388,9 +403,8 @@ void RecodeBeamSearch::ExtractPathAsUnicharIds(
   while (t < width) {
     double certainty = 0.0;
     double rating = 0.0;
-//    while ((t < width && best_nodes[t]->unichar_id == INVALID_UNICHAR_ID)||(t < width && !unicharset->get_enabled(best_nodes[t]->unichar_id))) {
-    while ((t < width && best_nodes[t]->unichar_id == INVALID_UNICHAR_ID)||(t < width && best_nodes[t]->unichar_id > 40)) {
-
+   while ((t < width && best_nodes[t]->unichar_id == INVALID_UNICHAR_ID)||(t < width && !unicharset->get_enabled(best_nodes[t]->unichar_id))) {
+    // while ((t < width && best_nodes[t]->unichar_id == INVALID_UNICHAR_ID)||(t < width && best_nodes[t]->unichar_id > 40)) {
       double cert = best_nodes[t++]->certainty;
       if (cert < certainty) certainty = cert;
       rating -= cert;
