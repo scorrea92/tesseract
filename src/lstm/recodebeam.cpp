@@ -167,14 +167,6 @@ void RecodeBeamSearch::ExtractBestPathAsUnicharIds(
     GenericVector<int>* xcoords) const {
   GenericVector<const RecodeNode*> best_nodes; 
 
-  std::cout << "RecodeBeamSearch::ExtractBestPathAsUnicharIds" << std::endl;
-  std::cout << "unicharset->size()    " << unicharset->size() << std::endl;
-
-  for (int t = 0; t < unicharset->size(); t++) {
-    std::cout << "unicharset->get_enabled(" << t <<"): ";
-    std::cout << unicharset->get_enabled(t) << std::endl; 
-  }  
-
   ExtractBestPaths(&best_nodes, nullptr);
   ExtractPathAsUnicharIds(best_nodes, unichar_ids, certs, ratings, xcoords);
 
@@ -200,6 +192,15 @@ void RecodeBeamSearch::ExtractBestPathAsWords(const TBOX& line_box,
   GenericVector<const RecodeNode*> second_nodes;
   std::deque<std::pair<int,int>> best_glyphs;
   ExtractBestPaths(&best_nodes, &second_nodes);
+
+  std::cout << "RecodeBeamSearch::ExtractBestPathAsWords" << std::endl;
+  std::cout << "unicharset->size()    " << unicharset->size() << std::endl;
+
+  for (int t = 0; t < unicharset->size(); t++) {
+    std::cout << "unicharset->get_enabled(" << t <<"): ";
+    std::cout << unicharset->get_enabled(t) << std::endl; 
+  }  
+
   if (debug) {
     DebugPath(unicharset, best_nodes);
     ExtractPathAsUnicharIds(second_nodes, &unichar_ids, &certs, &ratings,
