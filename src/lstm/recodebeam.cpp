@@ -194,7 +194,7 @@ void RecodeBeamSearch::ExtractBestPathAsWords(const TBOX& line_box,
   std::cout << "RecodeBeamSearch::ExtractBestPathAsWords" << std::endl;
 
   int count = 0;
-  for (int t = 0; t < charset->size(); t++) {
+  for (int t = 0; t < unicharset->size(); t++) {
     if (unicharset->get_enabled(t)){
       count ++;
     }
@@ -396,6 +396,15 @@ void RecodeBeamSearch::ExtractPathAsUnicharIds(
   xcoords->truncate(0);
     
   std::cout << "RecodeBeamSearch::ExtractPathAsUnicharIds" << std::endl;
+  int count = 0;
+  for (int t = 0; t < unicharset->size(); t++) {
+    if (unicharset->get_enabled(t)){
+      count ++;
+    }
+  } 
+
+  std::cout << "White char List: " << count << std::endl;
+
    
   // Backtrack extracting only valid, non-duplicate unichar-ids.
   int t = 0;
