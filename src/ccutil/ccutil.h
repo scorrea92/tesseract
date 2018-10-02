@@ -95,7 +95,7 @@ class CCUtil {
                "List of chars to override tessedit_char_blacklist");
 
   // Set the white and blacklists (if any)
-  unicharset.set_black_and_whitelist(tessedit_char_blacklist.string(),
+  unicharset->set_black_and_whitelist(tessedit_char_blacklist.string(),
                                      tessedit_char_whitelist.string(),
                                      tessedit_char_unblacklist.string());
 
