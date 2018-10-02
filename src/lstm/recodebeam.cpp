@@ -174,10 +174,9 @@ void RecodeBeamSearch::ExtractBestPathAsUnicharIds(
     std::cout << unicharset->get_enabled(t) << std::endl; 
   }  
 
-
   ExtractBestPaths(&best_nodes, nullptr);
   ExtractPathAsUnicharIds(best_nodes, unichar_ids, certs, ratings, xcoords);
-  
+
   if (debug) {
     DebugPath(unicharset, best_nodes);
     DebugUnicharPath(unicharset, best_nodes, *unichar_ids, *certs, *ratings,
