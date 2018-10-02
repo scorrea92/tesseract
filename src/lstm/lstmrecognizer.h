@@ -138,7 +138,7 @@ class LSTMRecognizer {
   // Provides access to the UNICHARSET that this classifier works with.
   const UNICHARSET& GetUnicharset() const { return ccutil_.unicharset.set_black_and_whitelist(tessedit_char_blacklist.string(),
                                      tessedit_char_whitelist.string(),
-                                     tessedit_char_unblacklist.string());; }
+                                     tessedit_char_unblacklist.string());}
   // Provides access to the UnicharCompress that this classifier works with.
   const UnicharCompress& GetRecoder() const { return recoder_; }
   // Provides access to the Dict that this classifier works with.
