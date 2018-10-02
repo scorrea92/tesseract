@@ -189,7 +189,7 @@ void RecodeBeamSearch::ExtractBestPathAsWords(const TBOX& line_box,
                                               int glyph_confidence) {
 
   UNICHARSET* charset = new UNICHARSET(*unicharset);
-  charset->set_black_and_whitelist("", "ABC", "");
+  charset->set_black_and_whitelist("", "abcd", "");
 
   std::cout << "RecodeBeamSearch::ExtractBestPathAsWords" << std::endl;
 
