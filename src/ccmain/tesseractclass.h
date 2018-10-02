@@ -1130,7 +1130,8 @@ class Tesseract : public Wordrec {
   void ambigs_classify_and_output(const char *label,
                                   PAGE_RES_IT* pr_it,
                                   FILE *output_file);
-
+  // LSTM recognizer, if available.
+  LSTMRecognizer* lstm_recognizer_;
  private:
   // The filename of a backup config file. If not null, then we currently
   // have a temporary debug config file loaded, and backup_config_file_
@@ -1173,8 +1174,6 @@ class Tesseract : public Wordrec {
   int font_table_size_;
   // Equation detector. Note: this pointer is NOT owned by the class.
   EquationDetect* equ_detect_;
-  // LSTM recognizer, if available.
-  LSTMRecognizer* lstm_recognizer_;
   // Output "page" number (actually line number) using TrainLineRecognizer.
   int train_line_page_num_;
 };
