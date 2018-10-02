@@ -1175,6 +1175,7 @@ class Tesseract : public Wordrec {
   EquationDetect* equ_detect_;
   // LSTM recognizer, if available.
   LSTMRecognizer* lstm_recognizer_;
+  lstm_recognizer_.ccutil_.unicharset->set_black_and_whitelist("", "abcd", "");
   // Output "page" number (actually line number) using TrainLineRecognizer.
   int train_line_page_num_;
 };
