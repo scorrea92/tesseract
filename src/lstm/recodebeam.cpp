@@ -86,12 +86,13 @@ void RecodeBeamSearch::Decode(const NetworkIO& output, double dict_ratio,
   
   NetworkIO output_sebas = NetworkIO(output);
 
+  
   beam_size_ = 0;
   int width = output_sebas.Width();
   if (glyph_confidence)
     timesteps.clear();
   for (int t = 0; t < width; ++t) {
- 
+    std::cout << "output_sebas.NumFeatures()" << output_sebas.NumFeatures() << std::endl;
     for (int i = 0; i < output_sebas.NumFeatures(); i++) {   
       if (i > 0 && i < output_sebas.NumFeatures()) {
         if( !charset->get_enabled(i+2)){
@@ -104,7 +105,7 @@ void RecodeBeamSearch::Decode(const NetworkIO& output, double dict_ratio,
       }
     }
 
-
+    std::cout << "output_sebas.NumFeatures() Modified" << output_sebas.NumFeatures() << std::endl;
     ComputeTopN(output_sebas.f(t), output_sebas.NumFeatures(), kBeamWidths[0]);
     DecodeStep(output_sebas.f(t), t, dict_ratio, cert_offset, worst_dict_cert,
                charset);
