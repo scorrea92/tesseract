@@ -98,9 +98,9 @@ void RecodeBeamSearch::Decode(const NetworkIO& output, double dict_ratio,
           output_sebas.f(t)[i] = 0.0;
         }
       } else if(i < output_sebas.NumFeatures()) {
-      if( !charset->get_enabled(i)){
-          output_sebas.f(t)[i] = 0.0;
-        }
+          if( !charset->get_enabled(i)){
+              output_sebas.f(t)[i] = 0.0;
+            }
       }
     }
 
