@@ -95,32 +95,47 @@ void RecodeBeamSearch::Decode(const NetworkIO& output, double dict_ratio,
     
     // Remove prob of not white charlist 
     int sum = 0;
-    for (int i = 3; i < output_sebas.NumFeatures(); i++) {   
-        if( !charset->get_enabled(i)){
-          sum += output_sebas.f(t)[i];
-          output_sebas.f(t)[i] = 0.0;
+    for (int i = 0; i < output_sebas.NumFeatures(); i++) {   
+        if (i==0){
+          if( !charset->get_enabled(i)){
+            sum += output_sebas.f(t)[i];
+            output_sebas.f(t)[i] = 0.0;
+          }
+        }else {
+          if( !charset->get_enabled(i+2)){
+            sum += output_sebas.f(t)[i];
+            output_sebas.f(t)[i] = 0.0;
+          }
         }
     }
-
-    sum /= output_sebas.NumFeatures();
 
     // Redestribute the prob mass
-    for (int i = 3; i < output_sebas.NumFeatures(); i++) {   
+    int total = 0;
+    for (int i = 0; i < output_sebas.NumFeatures(); i++) { 
+      if(output_sebas.f(t)[i] >= 0.01f ){
+        total ++;
+      }   
+    }
+
+    sum /= total;
+
+    for (int i = 0; i < output_sebas.NumFeatures(); i++) { 
+      if(output_sebas.f(t)[i] >= 0.01f){
         output_sebas.f(t)[i] += sum ;
+      }   
     } 
 
-    // Prints for see output char
-    for (int i = 0; i < 113; ++i) {
-      std::cout << "CHARSET[" << i << "] = " << charset->id_to_unichar_ext(i) << std::endl;
-    }
-    for (int i = 0; i < output_sebas.NumFeatures(); ++i) {
-        if (i > 0) {
-          std::cout << "output[" << i << "] = " << charset->id_to_unichar_ext(i + 2) << std::endl;
-        } else {
-          std::cout << "output[" << i << "] = " << charset->id_to_unichar_ext(i) << std::endl;
-        }
-    }
-
+    // // Prints for see output char
+    // for (int i = 0; i < 113; ++i) {
+    //   std::cout << "CHARSET[" << i << "] = " << charset->id_to_unichar_ext(i) << std::endl;
+    // }
+    // for (int i = 0; i < output_sebas.NumFeatures(); ++i) {
+    //     if (i > 0) {
+    //       std::cout << "output[" << i << "] = " << charset->id_to_unichar_ext(i + 2) << std::endl;
+    //     } else {
+    //       std::cout << "output[" << i << "] = " << charset->id_to_unichar_ext(i) << std::endl;
+    //     }
+    // }
 
 
     ComputeTopN(output_sebas.f(t), output_sebas.NumFeatures(), kBeamWidths[0]);
