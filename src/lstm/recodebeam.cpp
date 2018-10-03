@@ -92,7 +92,6 @@ void RecodeBeamSearch::Decode(const NetworkIO& output, double dict_ratio,
   if (glyph_confidence)
     timesteps.clear();
   for (int t = 0; t < width; ++t) {
-    std::cout << "output_sebas.NumFeatures()" << output_sebas.NumFeatures() << std::endl;
     
     for (int i = 3; i < output_sebas.NumFeatures(); i++) {   
         if( !charset->get_enabled(i)){
@@ -100,7 +99,21 @@ void RecodeBeamSearch::Decode(const NetworkIO& output, double dict_ratio,
         }
     }
 
-    std::cout << "output_sebas.NumFeatures() Modified " << output_sebas.NumFeatures() << std::endl;
+    for (int i = 0; i < 113; ++i) {
+      std::cout << "CHARSET[" << i << "] = " << charset->id_to_unichar_ext(i) << std::endl;
+    }
+
+
+    for (int i = 0; i < output_sebas.NumFeatures(); ++i) {
+        if (i + 2 >= output_sebas.NumFeatures()) {
+          std::cout << "output[" << i << "] = " <<  "" << std::endl;
+        } else if (i > 0) {
+          std::cout << "output[" << i << "] = " << charset->id_to_unichar_ext(i + 2) << std::endl;
+        } else {
+          std::cout << "output[" << i << "] = " << charset->id_to_unichar_ext(i) << std::endl;
+        }
+    }
+
     ComputeTopN(output_sebas.f(t), output_sebas.NumFeatures(), kBeamWidths[0]);
     DecodeStep(output_sebas.f(t), t, dict_ratio, cert_offset, worst_dict_cert,
                charset);
