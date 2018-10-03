@@ -93,17 +93,32 @@ void RecodeBeamSearch::Decode(const NetworkIO& output, double dict_ratio,
     timesteps.clear();
   for (int t = 0; t < width; ++t) {
     
+    // Remove prob of not white charlist 
+    int sum = 0;
     for (int i = 3; i < output_sebas.NumFeatures(); i++) {   
         if( !charset->get_enabled(i)){
+          sum += output_sebas.f(t)[i];
           output_sebas.f(t)[i] = 0.0;
         }
     }
 
+    sum /= output_sebas.NumFeatures();
+
+    // Redestribute the prob mass
+    for (int i = 3; i < output_sebas.NumFeatures(); i++) {   
+        output_sebas.f(t)[i] += sum ;
+    } 
+    for (int i = 3; i < output_sebas.NumFeatures(); i++) {   
+        if( !charset->get_enabled(i)){
+          sum += output_sebas.f(t)[i];
+          output_sebas.f(t)[i] = 0.0;
+        }
+    }
+
+    // Prints for see output char
     for (int i = 0; i < 113; ++i) {
       std::cout << "CHARSET[" << i << "] = " << charset->id_to_unichar_ext(i) << std::endl;
     }
-
-
     for (int i = 0; i < output_sebas.NumFeatures(); ++i) {
         if (i + 2 >= output_sebas.NumFeatures()) {
           std::cout << "output[" << i << "] = " <<  "" << std::endl;
@@ -113,6 +128,8 @@ void RecodeBeamSearch::Decode(const NetworkIO& output, double dict_ratio,
           std::cout << "output[" << i << "] = " << charset->id_to_unichar_ext(i) << std::endl;
         }
     }
+
+
 
     ComputeTopN(output_sebas.f(t), output_sebas.NumFeatures(), kBeamWidths[0]);
     DecodeStep(output_sebas.f(t), t, dict_ratio, cert_offset, worst_dict_cert,
