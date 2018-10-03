@@ -84,38 +84,32 @@ void RecodeBeamSearch::Decode(const NetworkIO& output, double dict_ratio,
                               double cert_offset, double worst_dict_cert,
                               const UNICHARSET* charset, int glyph_confidence) {
   
-  // NetworkIO output_sebas = NetworkIO(output);
+  NetworkIO output_sebas = NetworkIO(output);
 
   beam_size_ = 0;
-  int width = output.Width();
+  int width = output_sebas.Width();
   if (glyph_confidence)
     timesteps.clear();
   for (int t = 0; t < width; ++t) {
-
-    // std::cout << "output_sebas.NumFeatures()       " << output_sebas.NumFeatures() << std::endl;
-    // std::cout << "output.NumFeatures()       " << output.NumFeatures() << std::endl;
-    
-    // for (int i = 0; i < output_sebas.NumFeatures(); i++) {   
-    //   // if (i > 0) {
-    //   //   if( !charset->get_enabled(i+2)){
-    //   //     output_sebas.f(t)[i] = 0.0;
-    //   //   }
-    //   // } else {
-    //   // if( !charset->get_enabled(i)){
-    //   //     output_sebas.f(t)[i] = 0.0;
-    //   //   }
-    //   // }
-    //   if (i<50){
-    //     output_sebas.f(t)[i] = 0.0;
-    //   }
-    // }
+ 
+    for (int i = 0; i < output_sebas.NumFeatures(); i++) {   
+      if (i > 0 && i < output_sebas.NumFeatures()) {
+        if( !charset->get_enabled(i+2)){
+          output_sebas.f(t)[i] = 0.0;
+        }
+      } else {
+      if( !charset->get_enabled(i)){
+          output_sebas.f(t)[i] = 0.0;
+        }
+      }
+    }
 
 
-    ComputeTopN(output.f(t), output.NumFeatures(), kBeamWidths[0]);
-    DecodeStep(output.f(t), t, dict_ratio, cert_offset, worst_dict_cert,
+    ComputeTopN(output_sebas.f(t), output_sebas.NumFeatures(), kBeamWidths[0]);
+    DecodeStep(output_sebas.f(t), t, dict_ratio, cert_offset, worst_dict_cert,
                charset);
     if (glyph_confidence) {
-      SaveMostCertainGlyphs(output.f(t), output.NumFeatures(), charset, t);
+      SaveMostCertainGlyphs(output_sebas.f(t), output_sebas.NumFeatures(), charset, t);
     }
   }
 }
