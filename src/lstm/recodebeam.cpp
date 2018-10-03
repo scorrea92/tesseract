@@ -111,11 +111,11 @@ void RecodeBeamSearch::Decode(const NetworkIO& output, double dict_ratio,
     }
 
 
-    ComputeTopN(output_sebas.f(t), output_sebas.NumFeatures(), kBeamWidths[0]);
-    DecodeStep(output_sebas.f(t), t, dict_ratio, cert_offset, worst_dict_cert,
+    ComputeTopN(output.f(t), output.NumFeatures(), kBeamWidths[0]);
+    DecodeStep(output.f(t), t, dict_ratio, cert_offset, worst_dict_cert,
                charset);
     if (glyph_confidence) {
-      SaveMostCertainGlyphs(output_sebas.f(t), output_sebas.NumFeatures(), charset, t);
+      SaveMostCertainGlyphs(output.f(t), output.NumFeatures(), charset, t);
     }
   }
 }
