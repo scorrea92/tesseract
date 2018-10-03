@@ -26,6 +26,7 @@
 #include <map>
 #include <set>
 #include <vector>
+#include <iostream>
 
 #include <algorithm>
 
@@ -91,18 +92,23 @@ void RecodeBeamSearch::Decode(const NetworkIO& output, double dict_ratio,
     timesteps.clear();
   for (int t = 0; t < width; ++t) {
 
+    // std::cout << "output_sebas.NumFeatures()       " << output_sebas.NumFeatures() << std::endl;
+    // std::cout << "output.NumFeatures()       " << output.NumFeatures() << std::endl;
     
-    for (int i = 0; i < output_sebas.NumFeatures(); i++) {   
-      if (i > 0) {
-        if( !charset->get_enabled(i+2)){
-          output_sebas.f(t)[i] = 0.0;
-        }
-      } else {
-      if( !charset->get_enabled(i)){
-          output_sebas.f(t)[i] = 0.0;
-        }
-      }
-    }
+    // for (int i = 0; i < output_sebas.NumFeatures(); i++) {   
+    //   // if (i > 0) {
+    //   //   if( !charset->get_enabled(i+2)){
+    //   //     output_sebas.f(t)[i] = 0.0;
+    //   //   }
+    //   // } else {
+    //   // if( !charset->get_enabled(i)){
+    //   //     output_sebas.f(t)[i] = 0.0;
+    //   //   }
+    //   // }
+    //   if (i<50){
+    //     output_sebas.f(t)[i] = 0.0;
+    //   }
+    // }
 
 
     ComputeTopN(output_sebas.f(t), output_sebas.NumFeatures(), kBeamWidths[0]);
