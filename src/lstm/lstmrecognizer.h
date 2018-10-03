@@ -221,6 +221,9 @@ class LSTMRecognizer {
   void LabelsFromOutputs(const NetworkIO& outputs, GenericVector<int>* labels,
                          GenericVector<int>* xcoords);
 
+  // Has to be a CCUtil, so Dict can point to it.
+  CCUtil ccutil_;
+
  protected:
   // Sets the random seed from the sample_iteration_;
   void SetRandomSeed() {
@@ -270,8 +273,8 @@ class LSTMRecognizer {
   // The network hierarchy.
   Network* network_;
   // The unicharset. Only the unicharset element is serialized.
-  // Has to be a CCUtil, so Dict can point to it.
-  CCUtil ccutil_;
+  // // Has to be a CCUtil, so Dict can point to it.
+  // CCUtil ccutil_;
   // For backward compatibility, recoder_ is serialized iff
   // training_flags_ & TF_COMPRESS_UNICHARSET.
   // Further encode/decode ccutil_.unicharset's ids to simplify the unicharset.
