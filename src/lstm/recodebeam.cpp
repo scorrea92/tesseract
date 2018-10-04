@@ -97,7 +97,7 @@ void RecodeBeamSearch::Decode(const NetworkIO& output, double dict_ratio,
     // float sum = 0;
     // for (int i = 0; i < output_sebas.NumFeatures(); i++) {   
     //     if (i==0){
-    //       if( !charset->get_enabled(output_sebas.f(t)[i].unichar_id)){
+    //       if( !charset->get_enabled(i)){
     //         sum += output_sebas.f(t)[i];
     //         output_sebas.f(t)[i] = 0.0;
     //       }
@@ -112,7 +112,7 @@ void RecodeBeamSearch::Decode(const NetworkIO& output, double dict_ratio,
     // // Redestribute the prob mass
     // int total = 0;
     // for (int i = 0; i < output_sebas.NumFeatures(); i++) { 
-    //   if(output_sebas.f(t)[i] >= 0.01 ){
+    //   if(output_sebas.f(t)[i] >= 0.01f ){
     //     total ++;
     //   }   
     // }
@@ -120,7 +120,7 @@ void RecodeBeamSearch::Decode(const NetworkIO& output, double dict_ratio,
     // sum /= total;
 
     // for (int i = 0; i < output_sebas.NumFeatures(); i++) { 
-    //   if(output_sebas.f(t)[i] >= 0.01){
+    //   if(output_sebas.f(t)[i] >= 0.01f){
     //     output_sebas.f(t)[i] += sum ;
     //   }   
     // } 
