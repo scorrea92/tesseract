@@ -94,7 +94,7 @@ void RecodeBeamSearch::Decode(const NetworkIO& output, double dict_ratio,
   for (int t = 0; t < width; ++t) {
     
     // Remove prob of not white charlist 
-    int sum = 0;
+    float sum = 0;
     for (int i = 0; i < output_sebas.NumFeatures(); i++) {   
         if (i==0){
           if( !charset->get_enabled(i)){
