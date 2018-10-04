@@ -513,7 +513,7 @@ void RecodeBeamSearch::ComputeTopN(const float* outputs, int num_outputs,
   second_code_ = -1;
   top_heap_.clear();
   for (int i = 0; i < num_outputs; ++i) {
-    if (top_heap_.size() < top_n || outputs[i] > top_heap_.PeekTop().key && i<50) {
+    if (top_heap_.size() < top_n || outputs[i] > top_heap_.PeekTop().key) {
       TopPair entry(outputs[i], i);
       top_heap_.Push(&entry);
       if (top_heap_.size() > top_n) top_heap_.Pop(&entry);
