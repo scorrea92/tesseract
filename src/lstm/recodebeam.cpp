@@ -433,7 +433,7 @@ void RecodeBeamSearch::ExtractPathAsUnicharIds(
       if (cert < certainty) certainty = cert;
       rating -= cert;
     }
-    if (t < width && best_nodes[t]->unichar_id != 58) {
+    if (t < width) {
       int unichar_id = best_nodes[t]->unichar_id;
       if (unichar_id == UNICHAR_SPACE && !certs->empty() &&
           best_nodes[t]->permuter != NO_PERM) {
