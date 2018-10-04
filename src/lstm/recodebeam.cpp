@@ -415,7 +415,8 @@ void RecodeBeamSearch::DebugBeamPos(const UNICHARSET& unicharset,
 /* static */
 void RecodeBeamSearch::ExtractPathAsUnicharIds(
     const GenericVector<const RecodeNode*>& best_nodes,
-    GenericVector<int>* unichar_ids, GenericVector<float>* certs,
+    GenericVector<int>* unichar_ids, GenericVector<float>* 
+    ,
     GenericVector<float>* ratings, GenericVector<int>* xcoords,
     std::deque<std::pair<int,int>>* best_glyphs) {
   unichar_ids->truncate(0);
@@ -436,7 +437,7 @@ void RecodeBeamSearch::ExtractPathAsUnicharIds(
     if (t < width) {
       int unichar_id = best_nodes[t]->unichar_id;
       if (unichar_id == UNICHAR_SPACE && !certs->empty() &&
-          best_nodes[t]->permuter != NO_PERM && unichar_id != 58) {
+          best_nodes[t]->permuter != NO_PERM && unichar_id == 58) {
         // All the rating and certainty go on the previous character except
         // for the space itself.
         if (certainty < certs->back()) certs->back() = certainty;
