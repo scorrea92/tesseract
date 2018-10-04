@@ -93,37 +93,37 @@ void RecodeBeamSearch::Decode(const NetworkIO& output, double dict_ratio,
     timesteps.clear();
   for (int t = 0; t < width; ++t) {
     
-    // Remove prob of not white charlist 
-    float sum = 0;
-    for (int i = 0; i < output_sebas.NumFeatures(); i++) {   
-        if (i==0){
-          if( !charset->get_enabled(i)){
-            sum += output_sebas.f(t)[i];
-            output_sebas.f(t)[i] = 0.0;
-          }
-        }else {
-          if( !charset->get_enabled(i+2)){
-            sum += output_sebas.f(t)[i];
-            output_sebas.f(t)[i] = 0.0;
-          }
-        }
-    }
+    // // Remove prob of not white charlist 
+    // float sum = 0;
+    // for (int i = 0; i < output_sebas.NumFeatures(); i++) {   
+    //     if (i==0){
+    //       if( !charset->get_enabled(output_sebas.f(t)[i].unichar_id)){
+    //         sum += output_sebas.f(t)[i];
+    //         output_sebas.f(t)[i] = 0.0;
+    //       }
+    //     }else {
+    //       if( !charset->get_enabled(i+2)){
+    //         sum += output_sebas.f(t)[i];
+    //         output_sebas.f(t)[i] = 0.0;
+    //       }
+    //     }
+    // }
 
-    // Redestribute the prob mass
-    int total = 0;
-    for (int i = 0; i < output_sebas.NumFeatures(); i++) { 
-      if(output_sebas.f(t)[i] >= 0.01 ){
-        total ++;
-      }   
-    }
+    // // Redestribute the prob mass
+    // int total = 0;
+    // for (int i = 0; i < output_sebas.NumFeatures(); i++) { 
+    //   if(output_sebas.f(t)[i] >= 0.01 ){
+    //     total ++;
+    //   }   
+    // }
 
-    sum /= total;
+    // sum /= total;
 
-    for (int i = 0; i < output_sebas.NumFeatures(); i++) { 
-      if(output_sebas.f(t)[i] >= 0.01){
-        output_sebas.f(t)[i] += sum ;
-      }   
-    } 
+    // for (int i = 0; i < output_sebas.NumFeatures(); i++) { 
+    //   if(output_sebas.f(t)[i] >= 0.01){
+    //     output_sebas.f(t)[i] += sum ;
+    //   }   
+    // } 
 
     // // Prints for see output char
     // for (int i = 0; i < 113; ++i) {
@@ -436,7 +436,7 @@ void RecodeBeamSearch::ExtractPathAsUnicharIds(
     if (t < width) {
       int unichar_id = best_nodes[t]->unichar_id;
       if (unichar_id == UNICHAR_SPACE && !certs->empty() &&
-          best_nodes[t]->permuter != NO_PERM) {
+          best_nodes[t]->permuter != NO_PERM && unichar_id != 58) {
         // All the rating and certainty go on the previous character except
         // for the space itself.
         if (certainty < certs->back()) certs->back() = certainty;
