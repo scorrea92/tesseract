@@ -83,59 +83,86 @@ RecodeBeamSearch::RecodeBeamSearch(const UnicharCompress& recoder,
 void RecodeBeamSearch::Decode(const NetworkIO& output, double dict_ratio,
                               double cert_offset, double worst_dict_cert,
                               const UNICHARSET* charset, int glyph_confidence) {
-  
   NetworkIO output_sebas = NetworkIO(output);
-
-  
   beam_size_ = 0;
-  int width = output_sebas.Width();
+  int width = output.Width();
   if (glyph_confidence)
     timesteps.clear();
   for (int t = 0; t < width; ++t) {
-    
-    // // Remove prob of not white charlist 
-    // float sum = 0;
-    // for (int i = 0; i < output_sebas.NumFeatures(); i++) {   
-    //     if (i==0){
-    //       if( !charset->get_enabled(i)){
-    //         sum += output_sebas.f(t)[i];
-    //         output_sebas.f(t)[i] = 0.0;
-    //       }
+
+    float sum_sm = 0.0;
+    float sum = 0.0;
+    bool in = false;
+    int count = 0;
+   
+    // for (int k = 0; k < output_sebas.NumFeatures(); ++k) {
+    //   if ( 0 < k-2 < output_sebas.NumFeatures()){
+    //     if (!charset->get_enabled(k)){
+    //       output_sebas.f(t)[k-2] = 0.0;
+    //       if (!in)
+    //         in = true;
     //     }else {
-    //       if( !charset->get_enabled(i+2)){
-    //         sum += output_sebas.f(t)[i];
-    //         output_sebas.f(t)[i] = 0.0;
-    //       }
+    //       sum_sm += exp(output_sebas.f(t)[k-2]);
     //     }
-    // }
-
-    // // Redestribute the prob mass
-    // int total = 0;
-    // for (int i = 0; i < output_sebas.NumFeatures(); i++) { 
-    //   if(output_sebas.f(t)[i] >= 0.01f ){
-    //     total ++;
-    //   }   
-    // }
-
-    // sum /= total;
-
-    // for (int i = 0; i < output_sebas.NumFeatures(); i++) { 
-    //   if(output_sebas.f(t)[i] >= 0.01f){
-    //     output_sebas.f(t)[i] += sum ;
-    //   }   
+    //   }else{
+    //     if (!charset->get_enabled(k)){
+    //       output_sebas.f(t)[k] = 0.0;
+    //       if (!in)
+    //         in = true;
+    //     }else {
+    //       sum_sm += exp(output_sebas.f(t)[k]);
+    //     }
+    //   }
     // } 
+    
+    // if(in){ 
+    //   for (int k = 0; k < output_sebas.NumFeatures(); ++k) {
+    //     // if ( output_sebas.f(t)[k]!=0)
+    //       output_sebas.f(t)[k] = exp(output_sebas.f(t)[k]) / sum_sm;
+    //   }
+    // }
 
-    // // Prints for see output char
-    // for (int i = 0; i < 113; ++i) {
-    //   std::cout << "CHARSET[" << i << "] = " << charset->id_to_unichar_ext(i) << std::endl;
-    // }
-    // for (int i = 0; i < output_sebas.NumFeatures(); ++i) {
-    //     if (i > 0) {
-    //       std::cout << "output[" << i << "] = " << charset->id_to_unichar_ext(i + 2) << std::endl;
-    //     } else {
-    //       std::cout << "output[" << i << "] = " << charset->id_to_unichar_ext(i) << std::endl;
-    //     }
-    // }
+    for (int k = 0; k < output_sebas.NumFeatures(); ++k) {
+       if ( 0 < k-2 < output_sebas.NumFeatures()){
+        if (!charset->get_enabled(k)){
+          sum_sm += output_sebas.f(t)[k-2];
+          output_sebas.f(t)[k-2] = 0.0;
+          count ++;
+          if (!in)
+            in = true;
+        }
+      }else{
+        if (!charset->get_enabled(k)){
+          sum_sm += output_sebas.f(t)[k];
+          output_sebas.f(t)[k] = 0.0;
+          count ++;
+          if (!in)
+            in = true;
+        }
+      }
+    } 
+    sum_sm /= (output_sebas.NumFeatures()-count);
+
+    if(in){ 
+      for (int k = 0; k < output_sebas.NumFeatures(); ++k) {
+        if ( output_sebas.f(t)[k]!=0)
+          output_sebas.f(t)[k] += sum_sm;
+        sum += exp(output_sebas.f(t)[k]);
+      }
+    }
+
+    for (int k = 0; k < output_sebas.NumFeatures(); ++k) {
+      // if ( output_sebas.f(t)[k]!=0)
+      output_sebas.f(t)[k] = exp(output_sebas.f(t)[k]) / sum;
+    }
+
+
+    // sum = 0;
+    // for (int k = 0; k < output_sebas.NumFeatures(); ++k) {
+    //   std::cout << "[" << t << "]: " << charset->id_to_unichar(k) << " [" << k <<"] = " <<  output_sebas.f(t)[k] << "  enable: " << charset->get_enabled(k) << std::endl;
+    //   sum += output_sebas.f(t)[k]; 
+    // } 
+    // std::cout << "sum1: " << sum << std::endl;
 
 
     ComputeTopN(output_sebas.f(t), output_sebas.NumFeatures(), kBeamWidths[0]);
@@ -162,6 +189,8 @@ void RecodeBeamSearch::SaveMostCertainGlyphs(const float* outputs,
                                              int num_outputs,
                                              const UNICHARSET* charset,
                                              int xCoord) {
+
+  std::cout << "RecodeBeamSearch::SaveMostCertainGlyphs" << std::endl;                                      
   std::vector<std::pair<const char*, float>> glyphs;
   int pos = 0;
   for (int i = 0; i < num_outputs; ++i) {
@@ -428,7 +457,7 @@ void RecodeBeamSearch::ExtractPathAsUnicharIds(
   while (t < width) {
     double certainty = 0.0;
     double rating = 0.0;
-    while (t < width && best_nodes[t]->unichar_id == INVALID_UNICHAR_ID) {
+    while ( (t < width && best_nodes[t]->unichar_id == INVALID_UNICHAR_ID)  ) { // || ( t < width && best_nodes[t]->unichar_id==97)
       double cert = best_nodes[t++]->certainty;
       if (cert < certainty) certainty = cert;
       rating -= cert;

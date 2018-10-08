@@ -29,6 +29,7 @@
 #include "tesscallback.h"
 #include "tprintf.h"
 #include "unichar.h"
+#include <iostream>
 
 // TODO(rays) Move UNICHARSET to tesseract namespace.
 using tesseract::char32;
@@ -991,6 +992,9 @@ void UNICHARSET::set_black_and_whitelist(const char* blacklist,
       if (encoding[i] != INVALID_UNICHAR_ID)
         unichars[encoding[i]].properties.enabled = true;
     }
+      unichars[0].properties.enabled = true;
+      unichars[1].properties.enabled = true;
+      unichars[2].properties.enabled = true;
   }
   if (blacklist != nullptr && blacklist[0] != '\0') {
     // Disable the blacklist.
